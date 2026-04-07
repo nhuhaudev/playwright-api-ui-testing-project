@@ -13,7 +13,7 @@
 | TC_PROD_02 | Products | Open first product detail page | Products page is opened | 1. Click `View Product` for first product | N/A | Product detail page is displayed with product information | High |
 | TC_SEARCH_01 | Search | Search existing product | Products page is opened | 1. Enter product keyword into search input 2. Click search button | `top` | `SEARCHED PRODUCTS` is displayed and related products are shown | High |
 | TC_SEARCH_02 | Search | Search non-existing product | Products page is opened | 1. Enter non-existing keyword 2. Click search button | `abcxyz999` | No related products are displayed | Medium |
-| TC_SEARCH_03 | Search | Search with empty keyword | Products page is opened | 1. Leave search input empty 2. Click search button | Empty | System handles empty input without crash; result behavior is captured | Low |
+| TC_SEARCH_03 | Search | Search with empty keyword | Products page is opened | 1. Leave search input empty 2. Click search button | Empty | The system remains stable and displays the full list of products | Low |
 | TC_CART_01 | Cart | Add one product to cart | User is on homepage or products page | 1. Hover over a product 2. Click `Add to cart` 3. Click `View Cart` | Any available product | Product is added and visible in cart | High |
 | TC_CART_02 | Cart | Add two products to cart | User is on products page | 1. Add first product 2. Click `Continue Shopping` 3. Add second product 4. Click `View Cart` | Any 2 available products | Both products are displayed in cart | High |
 | TC_CART_03 | Cart | Verify product quantity in cart | Product detail page is opened | 1. Increase quantity to 4 2. Click `Add to cart` 3. Open cart | Quantity = 4 | Product is displayed in cart with exact quantity | High |
