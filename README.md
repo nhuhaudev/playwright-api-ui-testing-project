@@ -37,6 +37,7 @@ The testing scope includes:
 
 ## Folder Structure
 
+```bash
 automationexercise-qa-project/
 ├── screenshots/
 │   ├── html-report.png
