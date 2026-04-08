@@ -1,15 +1,10 @@
 {
   "validUser": {
-    "name": "Test User",
     "email": "hausu999@gmail.com",
     "password": "nhuhau2002"
   },
   "invalidUser": {
     "email": "wronguser@example.com",
     "password": "wrongpassword123"
-  },
-  "existingSignupUser": {
-    "name": "Test User",
-    "email": "hausu999@gmail.com"
   }
 }
