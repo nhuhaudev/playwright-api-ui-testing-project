@@ -70,6 +70,7 @@ automationexercise-qa-project/
 ├── package.json
 ├── tsconfig.json
 └── README.md
+```
 
 ---
 
