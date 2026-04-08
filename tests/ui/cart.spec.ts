@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { CartPage } from '../../pages/CartPage';
-import cartData from '../../test-data/cart.json';
+import { test, expect } from "@playwright/test";
+import { CartPage } from "../../pages/CartPage";
+import cartData from "../../test-data/cart.json";
 
-test.describe('Cart UI Tests', () => {
+test.describe("Cart UI Tests", () => {
   let cartPage: CartPage;
 
   test.beforeEach(async ({ page }) => {
@@ -11,7 +11,7 @@ test.describe('Cart UI Tests', () => {
     await expect(page).toHaveTitle(/Automation Exercise/i);
   });
 
-  test('Add products to cart', async () => {
+  test("Add products to cart", async () => {
     await cartPage.openProductsPage();
 
     await cartPage.hoverAndAddFirstProductToCart();
@@ -25,7 +25,7 @@ test.describe('Cart UI Tests', () => {
     await cartPage.verifyCartRowHasData(1);
   });
 
-  test('Verify quantity in cart', async () => {
+  test("Verify quantity in cart", async () => {
     await cartPage.openFirstProductDetail();
     await cartPage.setQuantity(cartData.expectedQuantity);
     await cartPage.addToCartFromDetailPage();
@@ -35,7 +35,7 @@ test.describe('Cart UI Tests', () => {
     await cartPage.verifyQuantityAtRow(0, cartData.expectedQuantity);
   });
 
-  test('Remove product from cart', async () => {
+  test("Remove product from cart", async () => {
     await cartPage.openProductsPage();
 
     await cartPage.hoverAndAddFirstProductToCart();
@@ -43,8 +43,7 @@ test.describe('Cart UI Tests', () => {
 
     await cartPage.verifyProductsAddedToCart(1);
 
-    const previousCount = await cartPage.cartTableRows.count();
     await cartPage.removeFirstProductFromCart();
-    await cartPage.verifyCartHasFewerItemsThan(previousCount);
+    await cartPage.verifyCartIsEmpty();
   });
 });

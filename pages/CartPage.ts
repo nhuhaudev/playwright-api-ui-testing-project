@@ -1,30 +1,29 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator, expect } from "@playwright/test";
 
 export class CartPage {
   readonly page: Page;
 
-  // Top navigation
   readonly productsMenu: Locator;
   readonly cartMenu: Locator;
 
-  // Product list / home / products page
+  readonly allProductsTitle: Locator;
+  readonly productsContainer: Locator;
+
   readonly productCards: Locator;
   readonly firstProductCard: Locator;
   readonly secondProductCard: Locator;
+
   readonly firstAddToCartButton: Locator;
   readonly secondAddToCartButton: Locator;
   readonly firstViewProductButton: Locator;
 
-  // Modal after add to cart
+  readonly addedModal: Locator;
   readonly continueShoppingButton: Locator;
   readonly viewCartLinkInModal: Locator;
-  readonly addedModal: Locator;
 
-  // Product detail page
   readonly quantityInput: Locator;
   readonly addToCartOnDetailButton: Locator;
 
-  // Cart page
   readonly cartTableRows: Locator;
   readonly deleteItemButtons: Locator;
   readonly emptyCartText: Locator;
@@ -32,137 +31,156 @@ export class CartPage {
   constructor(page: Page) {
     this.page = page;
 
-    // navigation
-    this.productsMenu = page.getByRole('link', { name: 'Products' });
-    this.cartMenu = page.getByRole('link', { name: 'Cart' });
+    this.productsMenu = page.getByRole("link", { name: "Products" });
+    this.cartMenu = page.getByRole("link", { name: "Cart" });
 
-    // product listing
-    this.productCards = page.locator('.features_items .product-image-wrapper');
+    this.allProductsTitle = page.getByText("All Products");
+    this.productsContainer = page.locator(".features_items");
+
+    this.productCards = page.locator(".product-image-wrapper");
     this.firstProductCard = this.productCards.nth(0);
     this.secondProductCard = this.productCards.nth(1);
 
-    // add to cart buttons in overlay after hover
-    this.firstAddToCartButton = this.firstProductCard.locator('.overlay-content a.add-to-cart');
-    this.secondAddToCartButton = this.secondProductCard.locator('.overlay-content a.add-to-cart');
+    this.firstAddToCartButton = this.firstProductCard.locator(
+      ".overlay-content a.add-to-cart",
+    );
+    this.secondAddToCartButton = this.secondProductCard.locator(
+      ".overlay-content a.add-to-cart",
+    );
 
-    // view product
-    this.firstViewProductButton = page.locator('a[href*="/product_details/"]').first();
+    this.firstViewProductButton = page
+      .locator('a[href*="/product_details/"]')
+      .first();
 
-    // modal
-    this.addedModal = page.locator('#cartModal');
-    this.continueShoppingButton = page.getByRole('button', { name: 'Continue Shopping' });
-    this.viewCartLinkInModal = this.addedModal.getByRole('link', { name: 'View Cart' });
+    this.addedModal = page.locator("#cartModal");
+    this.continueShoppingButton = page.getByRole("button", {
+      name: "Continue Shopping",
+    });
+    this.viewCartLinkInModal = this.addedModal.getByRole("link", {
+      name: "View Cart",
+    });
 
-    // detail page
-    this.quantityInput = page.locator('#quantity');
-    this.addToCartOnDetailButton = page.getByRole('button', { name: /add to cart/i });
+    this.quantityInput = page.locator("#quantity");
+    this.addToCartOnDetailButton = page.getByRole("button", {
+      name: /add to cart/i,
+    });
 
-    // cart page
-    this.cartTableRows = page.locator('#cart_info_table tbody tr');
-    this.deleteItemButtons = page.locator('.cart_quantity_delete');
-    this.emptyCartText = page.getByText('Cart is empty!');
+    this.cartTableRows = page.locator("#cart_info_table tbody tr");
+    this.deleteItemButtons = page.locator(".cart_quantity_delete");
+    this.emptyCartText = page.getByText("Cart is empty!");
   }
 
   async gotoHomePage() {
-    await this.page.goto('https://automationexercise.com/', {
-      waitUntil: 'domcontentloaded',
-      timeout: 60000
+    await this.page.goto("https://automationexercise.com/", {
+      waitUntil: "domcontentloaded",
     });
   }
 
   async openProductsPage() {
     await this.productsMenu.click();
-    await expect(this.page).toHaveURL(/.*products/, { timeout: 10000 });
-    await expect(this.productCards.first()).toBeVisible({ timeout: 10000 });
+    await expect(this.page).toHaveURL(/.*products/);
+    await expect(this.allProductsTitle).toBeVisible();
+    await expect(this.productsContainer).toBeVisible();
+    await expect(this.productCards.first()).toBeVisible();
   }
 
   async openCartPage() {
     await this.cartMenu.click();
-    await expect(this.page).toHaveURL(/.*view_cart/, { timeout: 10000 });
+    await expect(this.page).toHaveURL(/.*view_cart/);
   }
 
   async hoverAndAddFirstProductToCart() {
     await this.firstProductCard.scrollIntoViewIfNeeded();
-    await expect(this.firstProductCard).toBeVisible({ timeout: 10000 });
+    await expect(this.firstProductCard).toBeVisible();
 
     await this.firstProductCard.hover();
-    await expect(this.firstAddToCartButton).toBeVisible({ timeout: 10000 });
+
+    await expect(this.firstAddToCartButton).toBeVisible();
 
     await this.firstAddToCartButton.click();
-    await expect(this.addedModal).toBeVisible({ timeout: 10000 });
+
+    await expect(this.addedModal).toBeVisible();
   }
 
   async hoverAndAddSecondProductToCart() {
     await this.secondProductCard.scrollIntoViewIfNeeded();
-    await expect(this.secondProductCard).toBeVisible({ timeout: 10000 });
+    await expect(this.secondProductCard).toBeVisible();
 
     await this.secondProductCard.hover();
-    await expect(this.secondAddToCartButton).toBeVisible({ timeout: 10000 });
+    await expect(this.secondAddToCartButton).toBeVisible();
 
     await this.secondAddToCartButton.click();
-    await expect(this.addedModal).toBeVisible({ timeout: 10000 });
+    await expect(this.addedModal).toBeVisible();
   }
 
   async clickContinueShopping() {
-    await expect(this.continueShoppingButton).toBeVisible({ timeout: 10000 });
+    await expect(this.continueShoppingButton).toBeVisible();
     await this.continueShoppingButton.click();
-    await expect(this.addedModal).toBeHidden({ timeout: 10000 });
+
+    await expect(this.addedModal).toBeHidden();
   }
 
   async clickViewCartFromModal() {
-    await expect(this.viewCartLinkInModal).toBeVisible({ timeout: 10000 });
+    await expect(this.viewCartLinkInModal).toBeVisible();
     await this.viewCartLinkInModal.click();
-    await expect(this.page).toHaveURL(/.*view_cart/, { timeout: 10000 });
+
+    await expect(this.page).toHaveURL(/.*view_cart/);
+    await expect(this.cartTableRows.first()).toBeVisible();
   }
 
   async verifyProductsAddedToCart(count: number) {
-    await expect(this.cartTableRows).toHaveCount(count, { timeout: 10000 });
+    await expect(this.cartTableRows).toHaveCount(count);
   }
 
   async verifyCartRowHasData(rowIndex: number) {
     const row = this.cartTableRows.nth(rowIndex);
 
-    await expect(row.locator('.cart_description')).toBeVisible({ timeout: 10000 });
-    await expect(row.locator('.cart_price')).toBeVisible({ timeout: 10000 });
-    await expect(row.locator('.cart_quantity')).toBeVisible({ timeout: 10000 });
-    await expect(row.locator('.cart_total')).toBeVisible({ timeout: 10000 });
+    await expect(row.locator(".cart_description")).toBeVisible();
+    await expect(row.locator(".cart_price")).toBeVisible();
+    await expect(row.locator(".cart_quantity")).toBeVisible();
+    await expect(row.locator(".cart_total")).toBeVisible();
   }
 
   async verifyQuantityAtRow(rowIndex: number, expectedQuantity: string) {
     const row = this.cartTableRows.nth(rowIndex);
-    await expect(row.locator('.cart_quantity button')).toHaveText(expectedQuantity, {
-      timeout: 10000
-    });
+
+    await expect(row.locator(".cart_quantity button")).toHaveText(
+      expectedQuantity,
+    );
   }
 
   async openFirstProductDetail() {
     await this.firstViewProductButton.scrollIntoViewIfNeeded();
-    await expect(this.firstViewProductButton).toBeVisible({ timeout: 10000 });
+    await expect(this.firstViewProductButton).toBeVisible();
+
     await this.firstViewProductButton.click();
-    await expect(this.page).toHaveURL(/.*product_details.*/, { timeout: 10000 });
+    await expect(this.page).toHaveURL(/.*product_details/);
   }
 
   async setQuantity(quantity: string) {
-    await expect(this.quantityInput).toBeVisible({ timeout: 10000 });
+    await expect(this.quantityInput).toBeVisible();
     await this.quantityInput.fill(quantity);
   }
 
   async addToCartFromDetailPage() {
-    await expect(this.addToCartOnDetailButton).toBeVisible({ timeout: 10000 });
+    await expect(this.addToCartOnDetailButton).toBeVisible();
     await this.addToCartOnDetailButton.click();
-    await expect(this.addedModal).toBeVisible({ timeout: 10000 });
+
+    await expect(this.addedModal).toBeVisible();
   }
 
   async removeFirstProductFromCart() {
-    await expect(this.deleteItemButtons.first()).toBeVisible({ timeout: 10000 });
-    await this.deleteItemButtons.first().click();
-  }
+    const firstRow = this.cartTableRows.first();
 
-  async verifyCartHasFewerItemsThan(previousCount: number) {
-    await expect(this.cartTableRows).toHaveCount(previousCount - 1, { timeout: 10000 });
+    await expect(firstRow).toBeVisible();
+    await expect(this.deleteItemButtons.first()).toBeVisible();
+
+    await this.deleteItemButtons.first().click();
+
+    await expect(firstRow).toBeHidden();
   }
 
   async verifyCartIsEmpty() {
-    await expect(this.emptyCartText).toBeVisible({ timeout: 10000 });
+    await expect(this.emptyCartText).toBeVisible();
   }
 }
